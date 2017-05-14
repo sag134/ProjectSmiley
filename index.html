@@ -1,0 +1,68 @@
+<html>
+<head>
+	<title> test program </title>
+</head>
+<script>
+  var context;
+  var x = [1,100,190,280,370,420,400];
+  var y = [1,1,1,1,1,1,1,1];
+  var dx = [2,8,10,-2,15,14,20];
+  var dy = [5,3,-10,8,20,18,8];
+  var width = 650;
+  var height = 500;
+  function init()
+  {
+    context = canvas1.getContext('2d');
+    setInterval(draw,15)
+  }
+  function draw()
+  { 
+    context.clearRect(0,0,650,650)
+    var img = new Image()
+    img.src = "./caterpillar_birthday.jpg";
+    img.onload = function(){
+    	context.drawImage(img,10,10);
+    }
+    for(var i=1;i<8;i+=1){
+      //var i = 6;
+      console.log(i)
+      createImage(i);
+    }
+  }
+  function createImage(i)
+  {
+    console.log(i)
+    var image = new Image();
+    image.src = "./"+i+".png";
+    image.onload = function(){
+      context.drawImage(image,x[i-1],y[i-1],80,80);
+    }
+    
+      var newpos = move(x[i-1],y[i-1],dx[i-1],dy[i-1]);
+      x[i-1] = newpos[0];
+      y[i-1] = newpos[1];
+      dx[i-1] = newpos[2];
+      dy[i-1] = newpos[3];
+  }
+  function move(x,y,dx,dy)
+  {   
+      x = x+dx;
+      y = y+dy;
+      if(x+80+dx>width || x+dx <0) 
+      {
+        console.log(x)
+        console.log(dx)
+        dx = -dx;
+      }
+      if(y+dy+80>height || y+dy <0)
+      {
+        dy = -dy;
+      }
+    return [x,y,dx,dy];
+  }
+</script>
+<body onLoad="init();">
+  <canvas id="canvas1" width="650" height ="500">
+  </canvas>
+</body>
+</html>
